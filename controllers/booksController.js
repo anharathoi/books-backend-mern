@@ -8,17 +8,18 @@ const getAllBooks = async (req, res) => {
 
 const getOneBook = async (req, res) => {
   const { id } = req.params
-  const book = await Book.findOne({id})
+  const book = await Book.findOne({ id })
+  console.log(book._id)
   res.status(200).send(book)
 }
 
 const createNewBook = async (req, res) => {
   try {
-    const { title, genre, author } = req.body
-    const newBook = await Book.create({ title, genre, author })
-    res.status(201).send(`Successfully created book ${newBook.title}`)
+    const { id, title, genre, author } = req.body
+    const newBook = await Book.create({ id, title, genre, author })
+    res.status(201).send(`Successfully created book ${ newBook.title }`)
   } catch(err) {
-    res.status(400).send(`There has been an error ${err}`)
+    res.status(400).send(`There has been an error ${ err }`)
   }
 }
 

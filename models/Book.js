@@ -1,7 +1,10 @@
 const mongoose = require('mongoose')
 
 const bookSchema = {
-  id: Number,
+  id: {
+    type: Number,
+    unique: true
+  },
   title: String,
   genre: String,
   author: String,
