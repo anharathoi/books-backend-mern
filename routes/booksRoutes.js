@@ -1,14 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const { getAllBooks, getOneBook, createNewBook, seedBooks, updateOneBook } = require('../controllers/booksController')
+const { getAllBooks, getOneBook, createNewBook, seedBooks, updateOneBook, deleteOneBook } = require('../controllers/booksController')
 
 
 router.get( '/books', getAllBooks )
-router.get( '/books/:title', getOneBook )
+router.post('/books/newbook', createNewBook )
 
-router.post('/newbook', createNewBook )
+router.get( '/books/:id', getOneBook )
 
-router.put('/books/:title', updateOneBook)
+router.put('/books/:id', updateOneBook)
+
+router.delete('/books/:id', deleteOneBook)
 
 router.get('/seed', seedBooks )
 

@@ -7,9 +7,11 @@ const createThisManyFakeBooks = (numberOfBooks) => {
   for(i = 0; i < numberOfBooks; i++){
     let randomNum = Math.floor(Math.random() * 4)
     let newBook = {
+      id: i + 1,
       title: faker.random.words(),
       genre: genres[randomNum],
-      author: faker.name.findName()
+      author: faker.name.findName(),
+      price: (faker.finance.amount() / 10).toFixed(2)
     }
     books.push(newBook)
   }

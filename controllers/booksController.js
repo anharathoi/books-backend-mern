@@ -7,8 +7,8 @@ const getAllBooks = async (req, res) => {
 }
 
 const getOneBook = async (req, res) => {
-  const { title } = req.params
-  const book = await Book.findOne({title})
+  const { id } = req.params
+  const book = await Book.findOne({id})
   res.status(200).send(book)
 }
 
@@ -24,7 +24,7 @@ const createNewBook = async (req, res) => {
 
 const seedBooks = async (req, res) => {
   // drop all books
-  await Book.remove()
+  await Book.deleteMany()
   const newBooks = createThisManyFakeBooks(3)
   try {
     const books = await Book.insertMany(newBooks)
@@ -35,26 +35,33 @@ const seedBooks = async (req, res) => {
 }
 
 const updateOneBook = async (req, res) => {
-  const { title } = req.params
-  const book = await Book.findOne({title})
-  const newTitle = req.body.title || book.title
-  const author = req.body.author || book.author
-  const genre = req.body.genre || book.genre
-
-  try {
-    book.title = newTitle
-    book.author = author
-    book.genre = genre
-    await book.save()
-    res.status(200).send(`Sucessfully updated ${title} to ${newTitle}`)
-  } catch(err) {
-    res.status(400).send(`Failed to update book: ${err}`)
+  const { id } = req.params
+  const payload = req.body
+  
+  try{
+    await Book.updateOne({id}, payload)
+    res.status(200).send(`Sucessfully updated`)
+  } catch(err){
+    res.status(400).send(err)
   }
 }
+
+const deleteOneBook = async (req, res) => {
+  const { id } = req.params
+  try{
+    await Book.findOneAndRemove({id}, {useFindAndModify: false})
+    return res.status(200).send(`Book was successfully deleted`)
+  } catch(err){
+    console.log(err)
+    return res.status(400).send(`There has been an error: ${err}`)
+  }
+}
+
 module.exports = {
   getAllBooks,
   getOneBook,
   createNewBook,
   seedBooks,
-  updateOneBook
+  updateOneBook,
+  deleteOneBook
 }
